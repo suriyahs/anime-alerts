@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+<base target="_top">
+<meta charset="utf-8">
+<style>
+
+:root { color-scheme: dark; }
+body { background: #000; color: #fff; font-family: system-ui, sans-serif; max-width: 460px; margin: 40px auto; padding: 0 16px; line-height: 1.45; }
+h1 { margin-bottom: 4px; }
+p.sub { margin-top: 0; opacity: .75; }
+label { display: block; margin: 16px 0 4px; font-weight: 600; }
+input[type=text], input[type=email] { width: 100%; box-sizing: border-box; padding: 10px; font-size: 16px; border: 1px solid #666; border-radius: 6px; background: #000; color: #fff; }
+small { display: block; opacity: .7; margin-top: 4px; }
+.check { display: flex; gap: 8px; align-items: center; margin-top: 16px; }
+button { margin-top: 20px; padding: 11px 18px; font-size: 16px; border: 0; border-radius: 6px; background: #b05555; color: #fff; cursor: pointer; }
+button:disabled { opacity: .5; cursor: default; }
+#out { margin-top: 16px; padding: 10px; border-radius: 6px; display: none; }
+.ok { background: #5c2f2f; color: #f1d4d4; }
+.err { background: #000; color: #d98c8c; border: 2px solid #9c4a4a; }
+</style>
+</head>
+<body>
+<h1>anime alerts</h1>
+<p class="sub">get notified about new episodes, new seasons, sequels and spin-offs of anime on your anilist</p>
+
+<label for="email">email</label>
+<input type="email" id="email" autocomplete="email">
+
+<label for="user">anilist username</label>
+<input type="text" id="user" autocomplete="off">
+<small>your list must be public (anilist settings &rarr; lists &rarr; turn off "private")</small>
+
+<label for="hook">discord webhook url (optional)</label>
+<input type="text" id="hook" autocomplete="off">
+<small>in a discord channel: edit channel &rarr; integrations &rarr; webhooks &rarr; new webhook &rarr; copy url</small>
+
+<div class="check">
+<input type="checkbox" id="mail" checked>
+<label for="mail" style="margin:0;font-weight:400">also send alerts by email?</label>
+</div>
+
+
+<button id="go" onclick="send()">subscribe</button>
+<div id="out"></div>
+
+<script>
+function show(text, ok) {
+var o = document.getElementById('out');
+o.textContent = text;
+o.className = ok ? 'ok' : 'err';
+o.style.display = 'block';
+    }
+
+
+function send() {
+var b = document.getElementById('go');
+b.disabled = true;
+show('checking your anilist...', true);
+google.script.run
+        .withSuccessHandler(function (r) { b.disabled = false; show(r.ok ? r.message : r.error, r.ok); })
+        .withFailureHandler(function () { b.disabled = false; show('something went wrong, please try again', false); })
+        .subscribe(
+document.getElementById('email').value,
+document.getElementById('user').value,
+
+document.getElementById('hook').value,
+document.getElementById('mail').checked
+        );
+    }
+</script>
+</body>
+</html>
