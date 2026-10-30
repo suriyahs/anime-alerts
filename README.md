@@ -18,11 +18,9 @@ A message when:
 
 They look like this:
 
-```
-📺 TOUGEN ANKI: Nikko Kegon Falls Arc — episode 4 is out
-🆕 Dandadan 3rd Season — sequel of DAN DA DAN Season 2, announced (2027)
-📅 SAKAMOTO DAYS Season 2 — release date updated (2027 → 2027-01)
-```
+![An alert in Discord](docs/discord.png)
+
+![An alert by email](docs/email.png)
 
 Everyone picks email, Discord or both, and every message has an unsubscribe link that deletes their row from the sheet.
 
